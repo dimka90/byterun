@@ -1,7 +1,6 @@
-from pydantic import BaseModel, Field
-from dataclasses import dataclass
-from typing import List
-
-class Interpreter:
-    def __init__(self):
-        self.stack: List[int] = []
+from interpreter.vm import  Interpreter
+vm = Interpreter()
+vm.load(5)
+vm.load(90)
+vm.add()
+vm.print()
