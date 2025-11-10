@@ -5,7 +5,6 @@ from exception.errors import EmptyStackError
 
 
 class Interpreter:
-
     def __init__(self):
         self.stack = []
 
