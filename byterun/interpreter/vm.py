@@ -1,16 +1,7 @@
-from pydantic import BaseModel, Field
-from dataclasses import dataclass, field
-from typing import List, Literal, Optional, Dict
-from  byterun.exception.errors import EmptyStackError
 
-class Instruction(BaseModel):
-    opcode: Literal["ADD", "LOAD", "PRINT"]
-    index: Optional[int] = Field(default = None)
-
-class Program(BaseModel):
-    instructions: List[Instruction]
-    numbers: List[int]
-
+from  byterun.exception.errors import EmptyStackError, StackUnderflowError
+from byterun.types.opcode import Opcode
+from byterun.types.models import Program, Instruction
 class Interpreter:
     def __init__(self):
         self.stack = []
@@ -19,13 +10,13 @@ class Interpreter:
     
     def print(self) -> None:
         if len(self.stack) == 0:
-            raise EmptyStackError
+            raise EmptyStackError("Nothing to print")
         result = self.stack.pop()
         print(f'Result: {result}')
      
     def add(self) -> None:
-        if len(self.stack) == 0:
-            raise EmptyStackError
+        if len(self.stack)< 2:
+            raise StackUnderflowError
         first_num = self.stack.pop()
         second_num = self.stack.pop()
         total = first_num + second_num
@@ -36,12 +27,12 @@ class Interpreter:
         args = program.numbers
         for _, instruction in enumerate(instructions):
             to_dict = instruction.model_dump()
-            if to_dict['opcode'] == "LOAD":
+            if to_dict['opcode'] == Opcode.LOAD:
                 index = to_dict["index"]
                 number_to_store = args[index]
                 self.load(number_to_store)
-            if to_dict["opcode"] == "ADD":
+            elif to_dict["opcode"] == Opcode.ADD:
                 self.add()
-            if to_dict["opcode"] == "PRINT":
+            elif to_dict["opcode"] == Opcode.PRINT:
                 self.print()
 
