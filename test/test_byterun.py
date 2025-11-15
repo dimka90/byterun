@@ -1,6 +1,7 @@
 from byterun.interpreter.vm import Interpreter
-import pytest
-
-def test_stack():
+def test_interpreter_instance():
      empty_stack = Interpreter()
      assert len(empty_stack.stack)== 0
+     assert isinstance(empty_stack ,Interpreter)
+
+

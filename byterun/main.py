@@ -1,4 +1,5 @@
 from byterun.interpreter.vm import  Interpreter, Program
+import sys
 vm = Interpreter()
 vm.load(5)
 vm.load(90)
@@ -12,6 +13,7 @@ raw = {
     ],
     "numbers": [7, 5]
 }
+print(sys.path)
 
 program = Program(**raw)
 vm.run(program)

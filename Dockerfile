@@ -5,8 +5,8 @@ WORKDIR /app
 COPY pyproject.toml .
 
 # Copy the package
-COPY byterun/ ./byterun/
-
+COPY byterun/ ./byterun
+COPY test/  ./test
 # Install the package
 RUN pip install -e ".[dev]"
 
