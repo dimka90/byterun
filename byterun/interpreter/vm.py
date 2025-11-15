@@ -4,12 +4,13 @@ from typing import List, Literal, Optional, Dict
 from  byterun.exception.errors import EmptyStackError
 
 class Instruction(BaseModel):
-    op: Literal["ADD", "LOAD", "PRINT"]
-    value: Optional[int] = Field(default = None)
+    opcode: Literal["ADD", "LOAD", "PRINT"]
+    index: Optional[int] = Field(default = None)
 
 class Program(BaseModel):
     instructions: List[Instruction]
     numbers: List[int]
+
 class Interpreter:
     def __init__(self):
         self.stack = []
@@ -30,28 +31,17 @@ class Interpreter:
         total = first_num + second_num
         self.stack.append(total)
     
-    def run(self, program: Program):
+    def run(self, program: Program) ->None:
         instructions = program.instructions
         args = program.numbers
-
         for _, instruction in enumerate(instructions):
             to_dict = instruction.model_dump()
-            if to_dict['op'] == "LOAD":
-                self.load(args)
-                
+            if to_dict['opcode'] == "LOAD":
+                index = to_dict["index"]
+                number_to_store = args[index]
+                self.load(number_to_store)
+            if to_dict["opcode"] == "ADD":
+                self.add()
+            if to_dict["opcode"] == "PRINT":
+                self.print()
 
-
-
-
-    #  def run_code(self, what_to_execute):
-    #     instructions = what_to_execute["instructions"]
-    #     numbers = what_to_execute["numbers"]
-    #     for each_step in instructions:
-    #         instruction, argument = each_step
-    #         if instruction == "LOAD_VALUE":
-    #             number = numbers[argument]
-    #             self.LOAD_VALUE(number)
-    #         elif instruction == "ADD_TWO_VALUES":
-    #             self.ADD_TWO_VALUES()
-    #         elif instruction == "PRINT_ANSWER":
-    #             self.PRINT_ANSWER()
