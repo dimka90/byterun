@@ -3,6 +3,8 @@ from  byterun.exception.errors import EmptyStackError, StackUnderflowError
 from byterun.types.opcode import Opcode
 from byterun.types.models import Program
 from typing import List, Dict
+
+
 class Interpreter:
     def __init__(self):
         self.stack: List = []
@@ -27,6 +29,18 @@ class Interpreter:
     def pop(self) -> int:
         return self.stack.pop()
     
+    def load_name(self, to_dict, var_names):
+        index = to_dict["index"]
+        key = var_names[index]
+        value_to_stack = self.environment[key]
+        self.load(value_to_stack)
+
+    def store_name(self,to_dict, var_names):
+        value = self.pop()
+        index = to_dict["index"]
+        key = var_names[index]
+        self.environment[key] = value
+        
     def run(self, program: Program) ->None:
         instructions = program.instructions
         args = program.numbers
@@ -45,14 +59,6 @@ class Interpreter:
                 self.print()
 
             elif to_dict["opcode"] == Opcode.LOAD_NAME:
-                index = to_dict["index"]
-                key = var_names[index]
-                value_to_stack = self.environment[key]
-                self.load(value_to_stack)
-
+                self.load_name(to_dict, var_names)
             elif to_dict["opcode"] == Opcode.STORE_NAME:
-                value = self.pop()
-                index = to_dict["index"]
-                key = var_names[index]
-                self.environment[key] = value
-            
+                self.store_name(to_dict, var_names)
