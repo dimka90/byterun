@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
-from dataclasses import dataclass, field
-from typing import List, Literal, Optional, Dict
+from typing import List, Optional
 from byterun.types.opcode import Opcode
+
 class Instruction(BaseModel):
     opcode: Opcode
     index: Optional[int] = Field(default = None)
@@ -9,3 +9,4 @@ class Instruction(BaseModel):
 class Program(BaseModel):
     instructions: List[Instruction]
     numbers: List[int]
+    var_names: Optional[List[str]] = Field(default=None)
