@@ -17,7 +17,8 @@ raw = {
 }
 print("======================================")
 memory = Memory()
-memory.extend(22, 30)
+memory.store(0, 30)
+print(memory.data)
 print("======================================")
 program = Program(**raw)
 vm.run(program)
