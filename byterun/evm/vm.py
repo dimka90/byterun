@@ -26,6 +26,7 @@ class Interpreter:
         second_num = self.stack.pop()
         total = first_num + second_num
         self.stack.append(total)
+
     def pop(self) -> int:
         return self.stack.pop()
     
@@ -47,6 +48,7 @@ class Interpreter:
         var_names = program.var_names
         for _, instruction in enumerate(instructions):
             to_dict = instruction.model_dump()
+    
             if to_dict['opcode'] == Opcode.LOAD:
                 index = to_dict["index"]
                 number_to_store = args[index]
@@ -60,5 +62,15 @@ class Interpreter:
 
             elif to_dict["opcode"] == Opcode.LOAD_NAME:
                 self.load_name(to_dict, var_names)
+            
             elif to_dict["opcode"] == Opcode.STORE_NAME:
                 self.store_name(to_dict, var_names)
+
+
+opcode_map = {
+    Opcode.ADD: Interpreter.add,
+    Opcode.LOAD: Interpreter.load,
+    Opcode.LOAD_NAME: Interpreter.load_name,
+    Opcode.PRINT: Interpreter.print
+}
+print(opcode_map)

@@ -1,4 +1,5 @@
-from byterun.interpreter.vm import  Interpreter, Program
+from byterun.evm.vm import  Interpreter, Program
+from byterun.evm.memory import Memory
 vm = Interpreter()
 raw = {
     "instructions": [
@@ -14,5 +15,9 @@ raw = {
     "numbers": [10, 12],
     "var_names": ["a", "b"]
 }
+print("======================================")
+memory = Memory()
+memory.extend(22, 30)
+print("======================================")
 program = Program(**raw)
 vm.run(program)
