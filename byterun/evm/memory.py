@@ -13,7 +13,7 @@ class Memory:
         return 0
     
     def store(self, offset: int, value: int) -> None:
-        self.extend(offset, value)
+        self.extend(offset, 32)
         self.data[offset:offset+ 32] = value.to_bytes(32, 'big')
 
     def load(self, offset: int) -> int:
@@ -21,3 +21,8 @@ class Memory:
         value_to_return = self.data[offset:offset + 32]
         print(value_to_return)
         return int.from_bytes(value_to_return, 'big')
+    
+    def store8(self, offset: int, value: int) -> None:
+        self.extend(offset, 1)
+        self.data[offset: offset +1] = value & 0xFF
+        
