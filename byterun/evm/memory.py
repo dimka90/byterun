@@ -12,7 +12,7 @@ class Memory:
 
         if new_size > old_size:
             seize_to_compute = new_size -old_size
-            self.data.extend(b'\0x00' * seize_to_compute )
+            self.data.extend(b'\x00' * seize_to_compute )
             "Todo"
             "Gas calculation"
         return 0
