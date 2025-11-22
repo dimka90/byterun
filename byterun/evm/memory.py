@@ -13,8 +13,8 @@ class Memory:
         if new_size > old_size:
             seize_to_compute = new_size -old_size
             self.data.extend(b'\x00' * seize_to_compute )
-            "Todo"
-            "Gas calculation"
+            
+            return self._expansion_cost(old_size, new_size)
         return 0
     
     def store(self, offset: int, value: int) -> None:
@@ -36,5 +36,11 @@ class Memory:
         "size of data"
         return len(self.data)
     
+    def _expansion_cost(self, old_size: int, new_size: int) -> int:
+        old_words = (old_size + 31) // WORD_SIZE
+        new_words = (new_size + 31) // WORD_SIZE
+        gas = (new_words - old_words ) * 3
+
+        return gas
    
 
