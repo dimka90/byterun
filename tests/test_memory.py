@@ -20,3 +20,15 @@ def test_store(memory, offset, value):
 def test_store8_various_values(memory, offset, value):
     memory.store8(offset, value)
     assert memory.data[offset] == value
+
+@pytest.mark.parametrize("offset, value",[ (0, 10), (32, 30)])
+def test_load_for_store(memory, offset, value):
+    memory.store(offset, value)
+    assert memory.load(offset) == value
+
+
+@pytest.mark.parametrize("offset, value",[ (0, 10), (32, 30), (32,0xFF)])
+def test_load_for_store8(memory, offset, value):
+    memory.store(offset, value)
+    assert memory.load(offset) == value
+
