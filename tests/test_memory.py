@@ -8,14 +8,15 @@ def memory():
     return Memory()
 
 def test_empty_memory(memory):
-    assert len(memory.data) == 0
+    assert memory.size() == 0
 
-def test_store(memory):
-    memory.store(0, 10)
-    assert len(memory.data) == WORD_SIZE
-    assert memory.load(0) == 10
+@pytest.mark.parametrize("offset, value", [(0, 10), (32, 30), (64, 0xFF)])
+def test_store(memory, offset, value):
+    memory.store(offset, value)
+    assert len(memory.data) == WORD_SIZE + offset
+    assert int.from_bytes(memory.data[offset:offset + WORD_SIZE], "big") == value
 
-@pytest.mark.parametrize("offset, value", [(0,12), (12, 30), (32,0xFF)])
+@pytest.mark.parametrize("offset, value", [(0,12), (12, 30), (32,0xFF),])
 def test_store8_various_values(memory, offset, value):
     memory.store8(offset, value)
     assert memory.data[offset] == value
