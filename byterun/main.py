@@ -18,6 +18,7 @@ raw = {
 print("======================================")
 memory = Memory()
 memory.store(0, 30)
+memory.store(0, 1)
 memory.store(90, 1)
 result = memory.load(0)
 print("30", result)
